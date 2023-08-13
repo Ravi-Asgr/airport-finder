@@ -4,8 +4,6 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { Home } from "../pages/Home";
 import { About } from "../pages/About";
-import { Content } from "../Content";
-import { Container } from "../components/container/Container";
 
 export const PageRoutes = () => {
     const router = createBrowserRouter([
@@ -21,12 +19,5 @@ export const PageRoutes = () => {
 
     return (
         <RouterProvider router={router} />
-        // <BrowserRouter>
-        //     <Routes>
-        //         <Route path="/" element={<Content />}>
-        //             <Route path="/about" element={<About />} />
-        //         </Route>
-        //     </Routes>
-        // </BrowserRouter>
     );
 };
