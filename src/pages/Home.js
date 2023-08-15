@@ -6,10 +6,19 @@ export const Home = () => {
 
     //state for selected airport
     const [selectCityOption, setselectCityOption] = useState({});
+    const [nearbyAiport, setnearbyAiport] = useState([]);
 
-    const searchAirport = () => {
+    const searchAirport = async () => {
+        console.log(JSON.stringify(nearbyAiport));
         console.log(JSON.stringify(selectCityOption));
-
+        let airlabsURL = new URL('https://airlabs.co/api/v9/nearby');
+        airlabsURL.searchParams.set('lat', selectCityOption.lat);
+        airlabsURL.searchParams.set('lng', selectCityOption.lng);
+        airlabsURL.searchParams.set('distance', 30);
+        airlabsURL.searchParams.set('api_key', 'df50f1d0-6ff7-4d2a-9b63-427e4ddaa583');
+        const resp = await fetch(airlabsURL);
+        const data = await resp.json();
+        setnearbyAiport([...data.response.airports]);
     }
 
     return (
@@ -20,22 +29,24 @@ export const Home = () => {
                     searchAirport={searchAirport}>
                 </AutoComplete>
             </div>
-            <main>
-                <div className="grid grid-flow-col-2 sm:grid-cols-3 mt-5 gap-3">
-                    <div className="flex flex-col border border-slate-100">
-                        <h1 className="font-bold text-xl">HAL Bangalore Airport</h1>
-                        <span className="text-sm">BLR/VOBG</span>
-                    </div>
-                    <div className="flex flex-col border border-slate-100">
-                        <h1 className="font-bold text-xl">Yelahanka Airforce Base</h1>
-                        <span className="text-sm">BLR/VOBG</span>
-                    </div>
-                    <div className="flex flex-col border border-slate-100">
-                        <h1 className="font-bold text-xl">Kempegowda International Airport</h1>
-                        <span className="text-sm">BLR/VOBG</span>
-                    </div>
-                </div>
-            </main>
+            <div className="grid gap-3 mt-4 box-border px-6 mx-auto grid-cols-1 sm:grid-cols-3 justify-center content-center">
+                {
+                    nearbyAiport && nearbyAiport.length > 0 && (
+                        nearbyAiport.map((dt, i) => (
+
+                            <div key={i} className="flex flex-col min-w-0 border box-border border-slate-200 p-5 relative ali" style={{ minHeight: '1px' }}>
+                                <img className="block mt-0 mb-3 mx-auto align-middle overflow-clip" src="airport-terminal.jpg" alt="aiport"></img>
+                                <h1 className="font-bold text-base sm:text-xl mt-2">{dt.name}</h1>
+                                <span className="font-bold text-sm mt-3">{selectCityOption.city_code}/{dt.icao_code}</span>
+                                <span className="text-sm mt-3">DETAILS</span>
+                            </div>
+
+                        ))
+                    )
+                }
+            </div>
+
+
         </Container>
     );
 };
