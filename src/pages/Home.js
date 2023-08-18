@@ -1,12 +1,20 @@
 import { useState } from "react";
 import { Container } from "../components/container/Container";
 import AutoComplete from "../components/Autocomplete/Autocomplete";
+import { ModelDailog } from "../components/ModelPopup/modelpopup";
 
 export const Home = () => {
 
-    //state for selected airport
+    //state for selected city
     const [selectCityOption, setselectCityOption] = useState({});
+    //state for airports in selected city
     const [nearbyAiport, setnearbyAiport] = useState([]);
+    //state for selected airport
+    const [selAirport, selSelAirport] = useState({});
+    //state for selected airport arrivals
+    const [arrivals, setArrivals] = useState([]);
+    //state for open/close of dailog
+    const [showDailog, setShowDailog] = useState(false);
 
     const searchAirport = async () => {
         console.log(JSON.stringify(nearbyAiport));
@@ -19,6 +27,26 @@ export const Home = () => {
         const resp = await fetch(airlabsURL);
         const data = await resp.json();
         setnearbyAiport([...data.response.airports]);
+    }
+
+    const isModelClosed = () => {
+        setShowDailog(false);
+    }
+
+    const updateArrival = async (e) => {
+        let opt = JSON.parse(e.target.dataset.airport);
+        selSelAirport({...opt});
+        await getAirportSchedules(opt.iata_code);
+        setShowDailog(true);
+    }
+
+    const getAirportSchedules = async (iata_code) => {
+        let airlabsURL = new URL('https://airlabs.co/api/v9/schedules');
+        airlabsURL.searchParams.set('dep_iata', iata_code);
+        airlabsURL.searchParams.set('api_key', 'df50f1d0-6ff7-4d2a-9b63-427e4ddaa583');
+        const resp = await fetch(airlabsURL);
+        const data = await resp.json();
+        setArrivals([...data.response]);
     }
 
     return (
@@ -36,16 +64,23 @@ export const Home = () => {
 
                             <div key={i} className="flex flex-col min-w-0 border box-border border-slate-200 p-5 relative ali" style={{ minHeight: '1px' }}>
                                 <img className="block mt-0 mb-3 mx-auto align-middle overflow-clip" src="airport-terminal.jpg" alt="aiport"></img>
-                                <h1 className="font-bold text-base sm:text-xl mt-2">{dt.name}</h1>
-                                <span className="font-bold text-sm mt-3">{selectCityOption.city_code}/{dt.icao_code}</span>
-                                <span className="text-sm mt-3">DETAILS</span>
+                                <div className="flex mt-2 items-center">
+                                    <h1 className="font-bold text-base sm:text-xl">{dt.name}</h1>
+                                    <span className="text-sm ml-2">{selectCityOption.city_code}/{dt.icao_code}</span>
+                                </div>
+                                <span className="text-sm mt-3">Approx {dt.distance} KM</span>
+                                <button data-airport={JSON.stringify(dt)} onClick={updateArrival} className="text-sm mt-3">DETAILS</button>
                             </div>
 
                         ))
                     )
                 }
             </div>
-
+            {
+                showDailog && (
+                    <ModelDailog isOpen={showDailog} isModelClosed={isModelClosed} arrivals={arrivals} />
+                )
+            }
 
         </Container>
     );
