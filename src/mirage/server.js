@@ -13,9 +13,8 @@ export function makeServer() {
             server.loadFixtures()
         },
         routes() {
-            this.namespace = 'https://airlabs.co/api/v9';
-            this.get('https://airlabs.co/api/v9/schedules', (schema, req) => {
-                console.log(schema.db.schedule[0]);
+            this.namespace = 'https:/localhost/api/v9';
+            this.get('https://localhost/v9/schedules', (schema, req) => {
                 return schema.db.schedule[0];
             });
             this.passthrough((request) => {
@@ -26,6 +25,7 @@ export function makeServer() {
                 return request.url.includes("nearby");
               });
             this.passthrough('https://slim-data-harverster.onrender.com/**');
+            this.passthrough('https://airlabs.co/**');
             
         }
     });

@@ -12,9 +12,11 @@ export const Home = () => {
     //state for selected airport
     const [selAirport, selSelAirport] = useState({});
     //state for selected airport arrivals
-    const [arrivals, setArrivals] = useState([]);
+    const [schedules, setSchedules] = useState([]);
     //state for open/close of dailog
     const [showDailog, setShowDailog] = useState(false);
+    //state for choosen schedule type - Arrival (A) or Departures (D)
+    const [scheduleType, setScheduleType] = useState('');
 
     const searchAirport = async () => {
         console.log(JSON.stringify(nearbyAiport));
@@ -33,20 +35,27 @@ export const Home = () => {
         setShowDailog(false);
     }
 
-    const updateArrival = async (e) => {
+    const showSchedule = async (e) => {
         let opt = JSON.parse(e.target.dataset.airport);
+        let sch = e.target.dataset.schedule;
         selSelAirport({...opt});
-        await getAirportSchedules(opt.iata_code);
+        setScheduleType(sch);
+        await getAirportSchedules(opt.iata_code, sch);
         setShowDailog(true);
     }
 
-    const getAirportSchedules = async (iata_code) => {
+    const getAirportSchedules = async (iata_code, sch) => {
         let airlabsURL = new URL('https://airlabs.co/api/v9/schedules');
-        airlabsURL.searchParams.set('dep_iata', iata_code);
+
+        if (sch === 'A') {
+            airlabsURL.searchParams.set('arr_iata', iata_code);
+        } else {
+            airlabsURL.searchParams.set('dep_iata', iata_code);
+        }
         airlabsURL.searchParams.set('api_key', 'df50f1d0-6ff7-4d2a-9b63-427e4ddaa583');
         const resp = await fetch(airlabsURL);
         const data = await resp.json();
-        setArrivals([...data.response]);
+        setSchedules([...data.response]);
     }
 
     return (
@@ -69,7 +78,10 @@ export const Home = () => {
                                     <span className="text-sm ml-2">{selectCityOption.city_code}/{dt.icao_code}</span>
                                 </div>
                                 <span className="text-sm mt-3">Approx {dt.distance} KM</span>
-                                <button data-airport={JSON.stringify(dt)} onClick={updateArrival} className="text-sm mt-3">DETAILS</button>
+                                <div className="flex items-center justify-center gap-4">
+                                    <button data-airport={JSON.stringify(dt)} data-schedule={'A'} onClick={showSchedule} className="bg-slate-500 hover:bg-slate-700 text-white text-sm sm:text-base sm:font-bold py-1 px-2 rounded mt-3">Arrivals</button>
+                                    <button data-airport={JSON.stringify(dt)} data-schedule={'D'} onClick={showSchedule} className="bg-slate-500 hover:bg-slate-700 text-white text-sm sm:text-base sm:font-bold py-1 px-2 rounded mt-3">Departures</button>
+                                </div>
                             </div>
 
                         ))
@@ -78,7 +90,7 @@ export const Home = () => {
             </div>
             {
                 showDailog && (
-                    <ModelDailog isOpen={showDailog} isModelClosed={isModelClosed} arrivals={arrivals} />
+                    <ModelDailog isOpen={showDailog} isModelClosed={isModelClosed} schedules={schedules} scheduleType={scheduleType} />
                 )
             }
 
