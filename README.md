@@ -1,12 +1,16 @@
-# Realtime weather application
+# Realtime Airport & Flight Explorer
 ## Features
 * Realtime
-* Forecast 3 days/ 3 hours
-* City search
+* Airport Search
+* Airport Arrivals & Departures
+* Flight
 * Responsive
 ## Tech stack
 * React
 * Tailwind
+* Node.js for data harvesting
+* Mongo DB
+* Airlabs API
 ## Screenshots
 ### Web
 
