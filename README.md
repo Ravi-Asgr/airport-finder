@@ -1,3 +1,22 @@
+# Realtime Airport & Flight Explorer
+## Features
+* Realtime
+* Airport Search
+* Airport Arrivals & Departures
+* Flight
+* Responsive
+## Tech stack
+* React
+* Tailwind
+* Node.js for data harvesting
+* Mongo DB
+* Airlabs API
+## Screenshots
+### Web
+
+### Mobile
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
