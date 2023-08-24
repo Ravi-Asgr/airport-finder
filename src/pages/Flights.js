@@ -100,8 +100,8 @@ export const Flights = () => {
             fltData.flightNo = ent.flight_iata;
             let {hrs, min} = toHoursMinutes(ent.duration);
             fltData.duration = hrs+'h '+min+'m';
-            fltData.arrTerminal = ent.arr_terminals ? 'Arr T ' + ent.arr_terminals.toString() : '';
-            fltData.depTerminal = ent.dep_terminals ? 'Dep T ' + ent.dep_terminals.toString() : '';
+            fltData.arrTerminal = ent.arr_terminals ? 'Arr.Ter ' + ent.arr_terminals.toString() : '';
+            fltData.depTerminal = ent.dep_terminals ? 'Dep.Ter ' + ent.dep_terminals.toString() : '';
             fltData.days = ent.days;
             formatResp.push(fltData);
         } );
