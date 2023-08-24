@@ -1,10 +1,10 @@
 # Realtime Airport & Flight Explorer
 ## Features
 * Realtime
+* Responsive
 * Airport Search
 * Airport Arrivals & Departures
 * Flight
-* Responsive
 ## Tech stack
 * React
 * Tailwind
@@ -13,7 +13,11 @@
 * Airlabs API
 ## Screenshots
 ### Web
-
+![](readme-img/Desk-Airport-Serarch.PNG)
+![](readme-img/Desk-Airport-Arrivals.PNG)
+![](readme-img/Desk-Airport-Departure.PNG)
+![](readme-img/Desk-Flight-Search.PNG)
+![](readme-img/Desk-Flight-Routes.PNG)
 ### Mobile
 
 
