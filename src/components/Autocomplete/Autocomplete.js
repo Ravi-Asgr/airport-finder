@@ -62,7 +62,7 @@ const AutoComplete = ({ setselectCityOption, searchAirport }) => {
 
     const Suggestions = () => {
         return (
-            <ul className="z-10 absolute">
+            <ul className="z-10 absolute text-sm p-2 sm:text-base bg-white">
                 {suggestions.map((suggestion, index) => {
                     return (
                         <li className="cursor-pointer"
