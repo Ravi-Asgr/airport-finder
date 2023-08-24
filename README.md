@@ -1,3 +1,18 @@
+# Realtime weather application
+## Features
+* Realtime
+* Forecast 3 days/ 3 hours
+* City search
+* Responsive
+## Tech stack
+* React
+* Tailwind
+## Screenshots
+### Web
+
+### Mobile
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
